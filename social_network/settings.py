@@ -13,7 +13,7 @@ SECRET_KEY = '^-gzl)&fat$j(w%^jdyz^b==eme1o_%0^l0l47l71b3&0!6asn'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['mysite.com', 'localhost', '127.0.0.1', '0445844c.ngrok.io']
 
 
 # Application definition
@@ -25,7 +25,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'account.apps.AccountConfig'
+    'account.apps.AccountConfig',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -43,7 +44,28 @@ ROOT_URLCONF = 'social_network.urls'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'account.authentiaction.EmailAuthBackend',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
 ]
+
+if DEBUG:
+    from .social_settings import *
+else:
+    # *Facebook auth work with only https
+    SOCIAL_AUTH_FACEBOOK_KEY = '143348' # Facebook App ID
+    SOCIAL_AUTH_FACEBOOK_SECRET = '43291e53ea2c10351a2b3' # Facebook App Secret
+    SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+    # # Force https redirect
+    # SECURE_SSL_REDIRECT = True
+    # # Honor the 'X-Forwarded-Proto' header for request.is_secure()
+    # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    # # Force HTTPS in the final URIs
+    # SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
+
+    SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '31796pjm.apps.googleusercontent.com' # Google Consumer Key
+    SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'G-SrywcaNr4Xkb0' # Google Consumer Secret
+    SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
 
 TEMPLATES = [
     {
